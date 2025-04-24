@@ -138,3 +138,15 @@ def get_recent_classification_results(limit=10):
         
 # Function to clear all classification history
 def clear_classification_history():
+    session = SessionLocal()
+    try:
+        # Delete all records
+        session.query(ClassificationResult).delete()
+        session.commit()
+        return True
+    except Exception as e:
+        session.rollback()
+        print(f"Error clearing classification history: {str(e)}")
+        return False
+    finally:
+        session.close()
